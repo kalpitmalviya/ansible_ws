@@ -12,3 +12,9 @@
   - service: 
       name: "httpd" 
       state: started
+      
+  - firewalld:
+      port: 80/tcp
+      state: enabled
+      permanent: yes
+      immediate: yes
