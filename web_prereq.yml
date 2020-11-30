@@ -1,0 +1,71 @@
+- hosts: all
+  vars_prompt:
+      - name: dvd_dir
+        private: no
+        prompt: "Enter dvd mount point "
+          #- dvd_dir: "/dvd11"
+ 
+      - name: "doc_root"
+        private: no
+        prompt: "Enter location where you want to create directory,(eg. /var/www/lw)"
+ 
+      - name: "port_no"
+        private: no
+        prompt: "Enter port no.(eg.80/8080/81) "
+ 
+  tasks:
+  - name: "creating mount point for cdrom"
+    file:
+      state: directory
+      path: "{{ dvd_dir }}"
+ 
+  - name: "Mounting The dvd"
+    mount: 
+      src: "/dev/cdrom"
+      path: "{{ dvd_dir }}"
+      state: mounted   
+      fstype: "iso9660"
+ 
+  - name: "configuring AppStream"
+    yum_repository:
+      baseurl: "{{ dvd_dir }}/AppStream"      
+      name: "mydvd1"
+      description: "myyum dvd1 for package"      
+      gpgcheck: no     
+ 
+  - name: "configuring BaseOS" 
+    yum_repository:
+      baseurl: "{{ dvd_dir }}/BaseOS"      
+      name: "mydvd2"
+      description: "yum dvd2 for package"
+      gpgcheck: no     
+ 
+  - package:
+      name: "httpd"
+      state: present      
+ 
+  - name: "document root for web"
+    file:
+      state: directory
+      path: "{{ doc_root }}"
+ 
+  - template: 
+      dest: "/etc/httpd/conf.d/lw.conf"
+      src: "lw.conf"
+ 
+  - copy:
+      dest: "{{ doc_root }}/index.html"
+      content: "This is my www website from ansible!!\n"
+ 
+  - name: "Starting httpd service"
+    service: 
+      name: "httpd"
+      state: restarted    
+      enabled: yes  
+ 
+  - name: "setting the firewall"
+    firewalld:
+      port: "{{ port_no }}/tcp"
+      state: enabled
+      permanent: yes
+      immediate: yes
