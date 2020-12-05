@@ -1,0 +1,4 @@
+authname kalpit
+authtype basic
+authuserfile  /etc/www.passwd
+require valid-user
