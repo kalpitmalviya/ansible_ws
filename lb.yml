@@ -1,0 +1,29 @@
+- hosts: webserver_ip
+  tasks:
+  - name: "installing httpd software"
+    package:
+      name: "httpd"
+ 
+  - copy:
+      dest: "/var/www/html/"
+      src: "/var/www/html/index.php"
+ 
+  - service:
+       name: "httpd"
+       state: restarted
+ 
+ 
+- hosts: loadbalancer_ip
+  tasks:
+  - name: "installing haproxy software"
+    package:
+      name: "haproxy"
+ 
+  - template:
+      dest: "/etc/haproxy/haproxy.cfg"
+      src: "haproxy.cfg"
+ 
+ 
+  - service:
+      name: "haproxy"
+      state: restarted
