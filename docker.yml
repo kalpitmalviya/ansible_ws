@@ -1,0 +1,31 @@
+- hosts: 192.168.43.249
+  tasks:
+  - name: Configuring Docker Repository       
+    yum_repository:
+      name: docker
+      description: desc for docker
+      baseurl: https://download.docker.com/linux/centos/7/x86_64/stable/
+      gpgcheck: no
+ 
+  - name: Installing Docker Software
+    command: "yum install docker-ce --nobest -y"
+ 
+  - name: Starting Docker Service
+    service:
+      name: "docker"
+      state: started
+      enabled: yes
+ 
+  - name: Installing python3 
+    package:
+      name: "python36"
+      state: present 
+ 
+  - name: pip
+    pip:
+      name: docker-py
+ 
+  - name: Pulling httpd Image From Docker-Hub
+    docker_image:
+      name: "httpd" 
+      source: pull  
