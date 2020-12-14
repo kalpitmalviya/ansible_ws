@@ -1,6 +1,6 @@
 - hosts: webserver_ip
   tasks:
-  - name: "installing httpd software"
+  - name: "Installing Httpd Software"
     package:
       name: "httpd"
  
@@ -15,13 +15,13 @@
  
 - hosts: loadbalancer_ip
   tasks:
-  - name: "installing haproxy software"
+  - name: "Installing Haproxy Software"
     package:
       name: "haproxy"
  
   - template:
       dest: "/etc/haproxy/haproxy.cfg"
-      src: "haproxy.cfg"
+      src: "haproxy.cfg.j2"
  
  
   - service:
