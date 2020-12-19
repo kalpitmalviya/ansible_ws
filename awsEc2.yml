@@ -1,0 +1,27 @@
+- hosts: localhost
+  
+  tasks:
+  
+  - name: "Launching AWS ec2 instance"
+    
+    ec2_instance:
+
+      region: ap-south-1
+      
+      image_id: ami-08f63db601b82f5f
+      
+      instance_type: t2.micro
+      
+      name: os1_from_ansible
+      
+      vpc_subnet_id: subnet-bc7709f
+      
+      security_group: sg-0fe6c3953272c73f
+      
+      state: present
+      
+      key_name: key
+      
+      aws_access_key: 
+      
+      aws_secret_key: 
