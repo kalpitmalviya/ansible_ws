@@ -1,0 +1,20 @@
+- hosts: all
+  tasks:
+  - command: date
+    register: x
+  
+  - service:
+      name: httpd
+      state: "started"
+    register: y
+
+  - debug:
+      msg:  "return code"
+    when: x.rc != 0
+
+  - debug:
+      var: y
+
+  - debug:
+      msg: "done boolean false value"
+    when: x.rc==0  or   y.failed == false
