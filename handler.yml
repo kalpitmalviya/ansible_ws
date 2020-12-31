@@ -1,0 +1,29 @@
+- hosts: all
+  vars:
+  - os_name: "{{ ansible_facts['distribution'] }}"
+  tasks:
+       
+  - command: "123date"
+    ignore_errors: yes
+
+  - package:
+      name: httpd
+    when:  os_name == "RedHat" 
+
+  - copy:
+      dest: "/var/www/html/index.html"
+      content: "testing restart"
+
+  - template:
+      dest: "/etc/httpd/conf.d/kalpit.conf"
+      src: "kalpit.conf.j2"
+    notify: web service
+  
+  handlers:
+  - name: web service
+    service:
+      name: "httpd"
+      state: restarted
+
+  - debug:
+      msg: "testing"
