@@ -1,0 +1,26 @@
+- hosts:  all
+  tasks:
+  - block:
+    - package:
+        name: "httpd"
+        state: present
+      ignore_errors: yes
+
+    - service:
+        name: "httpd"
+        state: "started"
+
+    - debug:
+        msg: "try block.."
+    
+    rescue:
+    - copy: 
+        dest: "/var/www/html/kalpit.jpeg"
+        content: "hello world !!!"
+
+    - debug:
+         msg: "testing rescue"
+
+    always:
+    - debug:
+         msg: "this will run always..."
