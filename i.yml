@@ -1,0 +1,11 @@
+- hosts: all
+  tasks:
+  - command: "ls /lw12"
+    register: x
+    ignore_errors: yes
+  
+  - debug: 
+      var: x     
+
+  - command: "mkdir /lw12"
+    when: x.rc != 0
