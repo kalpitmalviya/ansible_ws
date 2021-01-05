@@ -1,0 +1,31 @@
+- hosts: all
+
+  vars:
+  
+  - userdb:
+  
+      - name: "pop"
+        p: "rr"
+        g: "lw1"
+        
+      - name: "jack"
+        p:  "rr"
+        g: "lw1"
+        
+      - name: "Amy"
+        p: "rr"
+        g: "lw1"
+
+  tasks:    
+  
+  - user:
+  
+      name: "{{ item.name }}"
+      
+      password: "{{ item.p }}"
+      
+      state: present
+      
+      groups: "{{ item.g }}"
+      
+    loop:  "{{ userdb }}"
