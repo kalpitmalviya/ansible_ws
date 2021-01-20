@@ -1,0 +1,16 @@
+- hosts: localhost
+
+  tasks:
+  
+  - name: Replace String if Pattern Match
+  
+    lineinfile:
+    
+      path: /etc/httpd/conf/httpd.conf
+      
+      regexp: '[Ll]isten 80'
+      
+      line: 'Listen 81'
+
+                                                                                                                             
+                          
