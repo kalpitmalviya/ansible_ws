@@ -1,0 +1,34 @@
+- name: Setting Up Local YUM
+  hosts: webservers
+  vars:
+    folder: /dvd
+  tasks:
+  - name: Creating Directory for dvd
+    file:
+      path: "{{ folder }}"
+      state: directory
+
+  - name: Mouting DVD
+    mount:
+      path: "{{ folder }}"
+      src: /dev/cdrom
+      fstype: iso9660
+      state: mounted
+
+  - name: Configuring appstream
+    yum_repository:
+      name: "dvd1"
+      description: appstream repo
+      baseurl: "file://{{ folder }}/AppStream"
+      gpgcheck: yes
+      gpgkey: "file://{{ folder }}/RPM-GPG-KEY-redhat-release"
+      enabled: yes
+
+  - name: Configuring baseos
+    yum_repository:
+      name: "dvd2"
+      description: baseos repo
+      baseurl: "file://{{ folder }}/BaseOS"
+      gpgcheck: yes
+      gpgkey: "file://{{ folder }}/RPM-GPG-KEY-redhat-release"
+      enabled: yes
